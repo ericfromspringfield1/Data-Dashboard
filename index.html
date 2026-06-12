@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A live data dashboard for weather alerts, radar, sports scores, and news headlines."
+    />
+    <title>Live Data Dashboard</title>
+    <link rel="preconnect" href="https://tile.openstreetmap.org" />
+    <link rel="preconnect" href="https://tilecache.rainviewer.com" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIINfQxDTnZxM0Pj8HwPpY0pD+FVu7n2k3w="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+      defer
+    ></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Live public data</p>
+        <h1>Data Dashboard</h1>
+        <p class="lede">
+          Weather warnings, animated radar, sports scores, and news headlines from free public data sources.
+        </p>
+      </div>
+      <form class="location-card" id="locationForm">
+        <label for="locationInput">Dashboard location</label>
+        <div class="location-row">
+          <input
+            id="locationInput"
+            type="text"
+            autocomplete="postal-code"
+            placeholder="City, state, or ZIP"
+            value="Washington, DC"
+          />
+          <button type="submit">Update</button>
+        </div>
+        <button class="ghost" type="button" id="geoButton">Use my location</button>
+        <p class="hint" id="locationStatus">Defaulting to Washington, DC.</p>
+      </form>
+    </header>
+
+    <main class="dashboard" aria-live="polite">
+      <section class="panel weather-alerts">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">National Weather Service</p>
+            <h2>Weather Warnings</h2>
+          </div>
+          <button class="icon-button" type="button" data-refresh="alerts" aria-label="Refresh weather alerts">↻</button>
+        </div>
+        <div class="status-pill" id="alertSummary">Loading alerts…</div>
+        <div class="card-list" id="alertsList"></div>
+      </section>
+
+      <section class="panel radar-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">RainViewer + OpenStreetMap</p>
+            <h2>Weather Radar</h2>
+          </div>
+          <button class="icon-button" type="button" data-refresh="radar" aria-label="Refresh radar">↻</button>
+        </div>
+        <div id="radarMap" role="img" aria-label="Interactive weather radar map"></div>
+        <div class="radar-meta" id="radarMeta">Loading radar layer…</div>
+      </section>
+
+      <section class="panel sports-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">ESPN scoreboards</p>
+            <h2>Sports Scores</h2>
+          </div>
+          <button class="icon-button" type="button" data-refresh="sports" aria-label="Refresh sports scores">↻</button>
+        </div>
+        <div class="tabs" id="sportsTabs" role="tablist" aria-label="Sports leagues"></div>
+        <div class="card-list compact" id="scoresList"></div>
+      </section>
+
+      <section class="panel news-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">GDELT news index</p>
+            <h2>News Headlines</h2>
+          </div>
+          <button class="icon-button" type="button" data-refresh="news" aria-label="Refresh news headlines">↻</button>
+        </div>
+        <label class="search-label" for="newsQuery">Topic filter</label>
+        <div class="location-row">
+          <input id="newsQuery" type="search" value="top stories United States" />
+          <button type="button" id="newsSearchButton">Search</button>
+        </div>
+        <div class="card-list" id="newsList"></div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Data sources: api.weather.gov, RainViewer, ESPN public scoreboards, GDELT 2.1, and OpenStreetMap tiles.
+      </p>
+      <p id="lastUpdated">Last updated: never</p>
+    </footer>
+  </body>
+</html>
